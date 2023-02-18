@@ -7,6 +7,27 @@
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
-  "dependencies": {},
+  "config": {
+    "port": 3000,
+    "hostName": "127.0.0.1",
+    "logger": {
+      "level": "info",
+      "transport": {
+        "target": "pino-pretty",
+        "options": {
+          "destination": "log.txt"
+        }
+      }
+    }
+  },
+  "prettier": {
+    "max_line_length": 160
+  },
+  "dependencies": {
+    "@fastify/static": "^6.8.0",
+    "fastify": "^4.12.0",
+    "pino": "^8.8.0",
+    "pino-pretty": "^9.1.1"
+  },
   "devDependencies": {}
 }
