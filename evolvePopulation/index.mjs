@@ -1,12 +1,13 @@
 import { createRandomMatrix } from "./random.mjs";
 import { nextGeneration } from "./evolution.mjs";
 import { fitness, pickBest } from "./operations.mjs";
-import { same } from "./tools.mjs";
+import { same, roundAll } from "./tools.mjs";
 
 let populationSize = 5000;
 let individualLength = 20;
 let mutationProbability = 0.4;
 let worker = work(populationSize, individualLength, mutationProbability);
+let lastResult = undefined;
 
 export default async function (context, req) {
   context.log("JavaScript HTTP trigger function processed a request.");
@@ -27,16 +28,17 @@ export default async function (context, req) {
     worker = work(populationSize, individualLength, mutationProbability);
   }
 
-  let result = undefined;
-
   for (let i = 0; i < requestIterationCount; i++) {
     const responseMessage = worker.next();
-    if (responseMessage.value) result = responseMessage.value;
+    if (responseMessage.value) lastResult = responseMessage.value;
   }
 
   context.res = {
     status: 200,
-    body: result,
+    body: {
+      result: roundAll(lastResult),
+      fitness: fitness(lastResult).toFixed(2),
+    },
   };
 }
 
