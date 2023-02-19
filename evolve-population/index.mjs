@@ -30,7 +30,9 @@ export default async function (context, req) {
 
   for (let i = 0; i < requestIterationCount; i++) {
     const responseMessage = worker.next();
+
     if (responseMessage.value) lastResult = responseMessage;
+    else if (responseMessage.done) lastResult.done = true;
   }
 
   context.res = {
