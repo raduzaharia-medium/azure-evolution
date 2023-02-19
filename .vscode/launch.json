@@ -15,5 +15,11 @@
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/web-client/server.mjs"
     }
+  ],
+  "compounds": [
+    {
+      "name": "Run All",
+      "configurations": ["Attach to Node Functions", "Launch Web Client"]
+    }
   ]
 }

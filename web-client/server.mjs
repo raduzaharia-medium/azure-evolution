@@ -1,19 +1,23 @@
-import Package from "./package.json" assert { type: "json" };
+import Package from "../package.json" assert { type: "json" };
 import Fastify from "fastify";
 
 import fastifyStatic from "@fastify/static";
+import replyFrom from "@fastify/reply-from";
 import path from "path";
 
 const fastify = Fastify({ logger: Package.config.logger });
 
 fastify.register(fastifyStatic, {
-  root: path.join(path.resolve("public")),
+  root: path.join(path.resolve("./web-client/public")),
   prefix: "/",
   index: "index.html",
 });
+fastify.register(replyFrom, {
+  base: "http://127.0.0.1:7071/",
+});
 
-fastify.get("/api/hello-world", async (request, reply) => {
-  reply.code(200).type("application/json").send({ hello: "world" });
+fastify.get("/api/evolve-population", async (request, reply) => {
+  return await reply.from("/api/evolve-population");
 });
 
 fastify.listen({

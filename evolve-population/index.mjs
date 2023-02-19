@@ -30,14 +30,15 @@ export default async function (context, req) {
 
   for (let i = 0; i < requestIterationCount; i++) {
     const responseMessage = worker.next();
-    if (responseMessage.value) lastResult = responseMessage.value;
+    if (responseMessage.value) lastResult = responseMessage;
   }
 
   context.res = {
     status: 200,
     body: {
-      result: roundAll(lastResult),
-      fitness: fitness(lastResult).toFixed(2),
+      data: roundAll(lastResult.value),
+      done: lastResult.done,
+      fitness: fitness(lastResult.value).toFixed(2),
     },
   };
 }
